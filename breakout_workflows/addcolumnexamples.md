@@ -22,7 +22,7 @@ So we began to explore possibilities for automating name reconciliation - sort o
 
 There were two particular issues with this work.
 
-Although the LCNAF was, in theory, available as Linked Open Data from the Library of Congress, like discussed in the page on reconciling values against the LCSH, the NAF as a RDF/XML (or other data format) is too big for our work or personal computers to manage. This means that, at this point at least, we have to rely on a third party access point to using the LCNAF Data. There are no SPARQL endpoints available for the LCNAF like we have with the LCSH, though. So, we turned to using VIAF and Search/Retrieval via URL as the intermediary.
+Although the LCNAF is available as Linked Open Data from the Library of Congress, the NAF as a RDF document (regardless of serialization) is too big for our work or personal computers to manage. This means that, at this point at least, we have to rely on a third party access point to using the LCNAF Data. There are no SPARQL endpoints available for the LCNAF like we have with the LCSH, though. So, we turned to using VIAF and Search/Retrieval via URL as the intermediary.
 
 The LCNAF is not the ideal authority file for trying to single out just architects. So, in the context of this dataset, this automatic reconciliation against the LCNAF occurred after reconciling against Getty's United List of Artists' Names (ULAN). There remains serious personal name reconciliation hesitations - in particular, the plethora of false matches - to consider. Building out this workflow to use the following guidelines could/will help and is being reviewed:
 
