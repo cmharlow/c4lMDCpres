@@ -1,6 +1,8 @@
 # Add a column by fetching URLs Reconciliation Examples
 
-These are two legacy documentation examples of using the OpenRefine 'Add a new column by fetching URL' functionality with the VIAF API. They are included just as examples of how to use that.
+To see an active use case and very high level instructions (users will need to fill in the rest) for reconciliation in this manner, check out the Mountain West Digital Library OpenRefine transformation using the GeoNames Web Services API Report - https://sites.google.com/site/mwdlgeospatial/home/openrefine
+
+Below are two legacy documentation examples of using the OpenRefine 'Add a new column by fetching URL' functionality with the VIAF API. They are included just as examples of how to use that.
 
 It is recommended for folks to review other methods of using reconciliation available, where possible, either through the DERI RDF extension or the OpenRefine Standard Reconciliation Service API.
 

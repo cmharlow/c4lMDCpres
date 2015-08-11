@@ -1,16 +1,4 @@
-# OpenRefine Standard Reconciliation Service API Workflows, Examples, Templates
-
-## Links
-
-* FAST Reconciliation Service (not hosted, using python): https://github.com/lawlesst/fast-reconcile
-  * Check 'pythonflaskmarkedupexample.md' in this workshop's GitHub repo.
-* LCNAF - VIAF Reconciliation Service (hosted and not hosted, using python): https://github.com/codeforkjeff/refine_viaf
-* VIAF Reconciliation Service Example (hosted, using PHP): https://github.com/rdmpage/phyloinformatics/blob/master/services/reconciliation_viaf.php
-* Basic Python/Flask Template: https://github.com/mikejs/reconcile-demo/
-* Extended Python/Flask Template for working with CSV files: https://github.com/okfn/helmut
-* Extended Python/Flask Template: https://github.com/mblwhoi/reconciliation_service_skeleton
-
-## Marked Up Example (reconcile.py file from Ted Lawless' FAST Reconciliation Service)
+# Marked Up Example (reconcile.py file from Ted Lawless' FAST Reconciliation Service)
 
 ### File structure:
 	* .gitignore

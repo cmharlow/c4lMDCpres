@@ -146,7 +146,14 @@ class: center middle
 class: center middle
 ## About This Workshop
 ### Christina Harlow, @cm_harlow
+### Group Questions - What do you want to know
 ### From perspective of a data munger, not a developer
+
+---
+class: center middle
+## Left-sharking It
+
+![Left-sharking](img/left-shark2.jpg "Left-sharking")
 
 ---
 class: center middle
@@ -157,10 +164,23 @@ class: center middle
 ### Owen Stephens, @ostephens
 
 ---
+class: center middle
+## Slides, Examples, + Install
+
+### Slides, Examples, Prompts, Sample Data:
+https://github.com/cmh2166/c4lMDCpres
+
+### Installation:
+http://openrefine.org/download.html
+
+### DERI RDF Extension:
+http://refine.deri.ie
+
+---
 class: middle
 ## Agenda
 
-  * Quick Intro to OpenRefine
+  * Very very very brief Intro to OpenRefine
   * OpenRefine Reconciliation options
     * Add column by fetching URL...
     * Standard Recon Service API
@@ -178,20 +198,15 @@ class: middle
   * GUI runs in your chosen browser
 
 ---
-class: center middle
-## Demo
-  Best way to explain OpenRefine is to show OpenRefine
-
----
 class: middle
-## OpenRefine Demo Checklist
+## OpenRefine Functionalities Checklist
 
-  * Open Project
-  * Project Import
+  * Import/Export Options
   * Facets
   * Clustering
   * GREL
-  * Questions so far (some may be bookmarked for breakouts)
+  * Extensions
+  * Can be a breakout
 
 ---
 class: center middle
@@ -204,13 +219,16 @@ class: middle
 ## OpenRefine Recon Options
 
   * Add column by fetching URL...
+    * performs HTTP requests against external data API in UI
     * takes far longer to pull data
     * requires parsing returned data in OpenRefine with GREL
   * Standard Recon Service API
-    * requires tinkering knowledge of template language, API
-    * must host for easier use in OpenRefine
+    * built a RESTful API that works between OpenRefine and external data
+    * requires tinkering knowledge of API building
+    * can host for easier use in OpenRefine
   * DERI RDF Extension
     * no longer actively supported
+    * extends the Standard Recon Service API to work with RDF, SPARQL Endpoints
     * RDF docs held in memory
     * SPARQL work runs into errors dependent on SPARQL endpoint server details
 
