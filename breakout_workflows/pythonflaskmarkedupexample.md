@@ -9,7 +9,7 @@
 	* text.py <= used in reconcile.py for data normalization before querying external data source
 
 ### reconcile.py:
-
+```python
 """
 An OpenRefine reconciliation service for the API provided by
 OCLC for FAST.
@@ -26,23 +26,32 @@ from flask import jsonify
 import json
 from operator import itemgetter
 import urllib
+```
 
-#### For scoring results: The fuzzy wuzzy library is used in a number of OpenRefine Recon APIs for matching. It does text matching based off of use of the levenshtein distance metric: https://en.wikipedia.org/wiki/Levenshtein_distance.
+_For scoring results: The fuzzy wuzzy library is used in a number of OpenRefine Recon APIs for matching. It does text matching based off of use of the levenshtein distance metric: https://en.wikipedia.org/wiki/Levenshtein_distance._
 
+```python
 from fuzzywuzzy import fuzz
 import requests
+```
 
-#### This recon service uses the Flask 'microframework' to create the HTTP-based REST API. Users will use flask commands to get this API running locally, so that it can both take the HTTP requests from OpenRefine, as well as send and receive HTTP requests with the external dataset.
+_This recon service uses the Flask 'microframework' to create the HTTP-based REST API. Users will use flask commands to get this API running locally, so that it can both take the HTTP requests from OpenRefine, as well as send and receive HTTP requests with the external dataset._
 
+```python
 app = Flask(__name__)
+```
 
-#### some config: This is where the external data API-specific information is put in. Below, this url is made into a variable for constructing the API queries. 
+_some config: This is where the external data API-specific information is put in. Below, this url is made into a variable for constructing the API queries._
 
+```python
 api_base_url = 'http://fast.oclc.org/searchfast/fastsuggest'
+```
 
-#### For constructing links to FAST. The following URL is a python structure for then creating URIs for the external data API values returned. This is based off of the structure of that particular dataset - here, FAST URIs. Note that the {0} portion is a way for python to know to put in the retrieved identifers in that part of the URI.
+_For constructing links to FAST. The following URL is a python structure for then creating URIs for the external data API values returned. This is based off of the structure of that particular dataset - here, FAST URIs. Note that the {0} portion is a way for python to know to put in the retrieved identifers in that part of the URI._
 
+```python
 fast_uri_base = 'http://id.worldcat.org/fast/{0}'
+```
 
 #### If it's installed, use the requests_cache library to cache calls to the FAST API. Caching helps improve performance in sending and receiving data from the external API. 
 
@@ -119,7 +128,7 @@ metadata = {
     }
 }
 
-#### Function for making the FAST URI, which is also a URL.
+#### Function for making the FAST URI, which is also a URL. URL is used in the OpenRefine interface 
 
 def make_uri(fast_id):
     """
@@ -129,7 +138,7 @@ def make_uri(fast_id):
     fast_uri = fast_uri_base.format(fid)
     return fast_uri
 
-#### To be entirely honest, I just know this helps with making the HTTP requests work with JSON data. Beyond that, beyond me.
+#### This helps the OpenRefine Service API work with JSON - both sending the JSONP service metadata back to OpenRefine when registering, as well working with JSON data from OpenRefine for querying and returned from external API post-matching for ranking.
 
 def jsonpify(obj):
     """

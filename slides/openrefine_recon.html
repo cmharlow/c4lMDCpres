@@ -202,8 +202,9 @@ class: middle
 ## OpenRefine Functionalities Checklist
 
   * Import/Export Options
+  * Cleans
   * Facets
-  * Clustering
+  * Clusters
   * GREL
   * Extensions
   * Can be a breakout
@@ -257,18 +258,73 @@ class: center middle
 
 Access an external data set by building an OpenRefine Standard Reconciliation Service that handles querying, matching, and returning results from an external data service API.
 
-A OpenRefine Standard Reconciliation Service API is at core a HTTP-based RESTful JSON-formatted API. This can be constructed in a number of languages and frameworks.
+A OpenRefine Standard Reconciliation Service API is a HTTP-based RESTful JSON-formatted API connecting OpenRefine to external datasets. This API can be constructed in a number of languages and frameworks.
+
+Originally based off of Freebase extension (no longer working).
 
 ---
 class: middle
 ## Standard Recon Service API Parts
 
   * Recon Service Endpoint
-  * Entity 'Types'
+    * GET to send service info to OpenRefine
+    * POST to query data API for matches
   * Recon Service Metadata
-  * Query Request
-  * Response Handling
+  * Entity 'Types'
+    * Freebase holdover
+  * Query/Response Handling
   * Other bells and whistles
+
+---
+class: middle
+## Recon Service API Metadata
+
+"When a service is called with just a JSONP callback parameter and no other parameters, it must return its metadata as a JSON object literal with at least 3 fields 'name', 'identifierSpace', and 'schemaSpace'. Other fields are optional for reconciliation services which can make use of the default Freebase preview, suggest, etc services, but non-Freebase reconciliation services may need to implement them all." -- https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API
+
+---
+class: middle
+## Recon Service API Metadata Example
+
+```
+{
+  "name" : "Reconciliation Service Name",
+  "identifierSpace" : "http://rdf.freebase.com/ns/some.name.space",
+  "schemaSpace" : "http://rdf.freebase.com/ns/type.object.id",
+  "view" : {
+    "url" : "http://www.externaldatasource.org//{{id}}"
+  },
+  "preview" : {
+    "url" : "http://this-api.freebaseapps.com/preview/{{id}}",
+    "width" : 430,
+    "height" : 300
+  },
+  "suggest" : {
+    "type" : {
+      "service_url" : "http://this-api.freebaseapps.com",
+      "service_path" : "/suggest_type",
+      "flyout_service_url" : "http://www.freebase.com"
+    },
+    "property" : {
+      "service_url" : "http://this-api.freebaseapps.com",
+      "service_path" : "/suggest_property",
+      "flyout_service_url" : "http://www.freebase.com"
+    },
+    "entity" : {
+      "service_url" : "http://this-api.freebaseapps.com",
+      "service_path" : "/suggest",
+      "flyout_service_path" : "/flyout"
+    }
+  },
+  "defaultTypes" : []
+}
+```
+-- https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API
+
+---
+class: center middle
+## Entity Types
+
+
 
 ---
 class: center middle
