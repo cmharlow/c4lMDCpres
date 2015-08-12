@@ -3,8 +3,8 @@
 ### File structure:
 	* .gitignore
 	* LICENSE
-	* README.md <= please include documentation, use cases, links to other examples!
-	* reconcile.py <= meat of the reconciliation work, shown below with comments
+	* README.md <= please include this with documentation, use cases, links to other examples!
+	* reconcile.py <= heart of the reconciliation work, shown below with comments
 	* requirements.txt <= tells the local environment what is needed for this particular recon service API to work
 	* text.py <= used in reconcile.py for data normalization before querying external data source
 
@@ -19,7 +19,11 @@ http://www.oclc.org/developer/documentation/fast-linked-data-api/request-types
 This code is adapted from Michael Stephens:
 https://github.com/mikejs/reconcile-demo
 """
+```
 
+_Below, we import a bunch of python libraries needed for making this API - namely, flask, a [microframework:](http://flask.pocoo.org/), the json library for working the the json data received and sent, _
+
+```python
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -71,7 +75,7 @@ _Helper text processing - this imports the external text.py document in this set
 import text
 ```
 
-_Map the FAST query indexes to service types. This is where the OpenRefine Reconciliation Service structure comes into play. In order to allow different the OpenRefine user to call different FAST API indices for different reconciliation calls, an OpenRefine entity type is assigned to each, with the required metadata (id, name, index). One only needs to include the default_query for this to work with OpenRefine, however. Note that the ids below are related to how OpenRefine holds the entity types, and the indices are based on how the search indices available with the FAST API._
+_Map the FAST query indexes to service entity types. This is where the OpenRefine Reconciliation Service structure comes into play. In order to allow different the OpenRefine user to call different FAST API indices for different reconciliation calls, an OpenRefine entity type is assigned to each here, with the required metadata (id, name, index). One only needs to include the default_query for this to work with OpenRefine, however. Note that the ids below are related to how OpenRefine holds the entity types, and the indices are based on how the search indices available with the FAST API._
 
 ```python
 default_query = {
@@ -120,7 +124,7 @@ refine_to_fast = [
 refine_to_fast.append(default_query)
 ```
 
-_Make a copy of the FAST mappings. This takes the entity types used for searching above, and makes a query object to send to the external data service._
+_Make a copy of the FAST mappings._
 
 ```python
 query_types = [{'id': item['id'], 'name': item['name']} for item in refine_to_fast]
@@ -171,7 +175,7 @@ _The function where we tell our OpenRefine service how to create and handle the 
 ```python
 def search(raw_query, query_type='/fast/all'):
     """
-    Hit the FAST API for names.
+    Hit the FAST API for names. Create out for what we'll return to OpenRefine. unique_fast_ids  is to help store results for faster matching. Assign the default query type if no given type exists. Then pull the query_index from that type.
     """
     out = []
     unique_fast_ids = []
@@ -180,6 +184,12 @@ def search(raw_query, query_type='/fast/all'):
     if query_type_meta == []:
         query_type_meta = default_query
     query_index = query_type_meta[0]['index']
+```
+
+_Now building the FAST API query URL. Logger the URL in the CLI where this is running. If there is an exception, that is logged._
+
+
+```python
     try:
         #### FAST api requires spaces to be encoded as %20 rather than +
         url = api_base_url + '?query=' + urllib.quote(query)
@@ -191,6 +201,11 @@ def search(raw_query, query_type='/fast/all'):
     except Exception, e:
         app.logger.warning(e)
         return out
+```
+
+_Now, will run through the FAST API results to see if we can change match from False to True. To do so, get the name as well as the alternate name from the FAST matches. Get the ID for the FAST match and build a FAST URL/URI from it. Get rid of duplicate FAST matches._
+
+```python
     for position, item in enumerate(results['response']['docs']):
         match = False
         name = item.get('auth')
@@ -207,6 +222,11 @@ def search(raw_query, query_type='/fast/all'):
             continue
         else:
             unique_fast_ids.append(fid)
+```
+
+_With the information we want from the FAST API responses, we'll now use the fuzzy wuzzy library to make match scores for each FAST match's name and alternate name. The scores are returned for ranking. If the OpenRefine query exactly matches the FAST match, we'll consider it a match as well._
+
+```python
         score_1 = fuzz.token_sort_ratio(query, name)
         score_2 = fuzz.token_sort_ratio(query, alt)
         #Return a maximum score
@@ -215,6 +235,11 @@ def search(raw_query, query_type='/fast/all'):
             match = True
         elif query == text.normalize(alt):
             match = True
+```
+
+_This creates the reconciliation objects we will return to OpenRefine, with sorting and only the top three matches are returned._
+
+```python
         resource = {
             "id": fast_uri,
             "name": name,
@@ -229,7 +254,7 @@ def search(raw_query, query_type='/fast/all'):
     return sorted_out[:3]
 ```
 
-_How to handle the HTTP methods here._
+_How to handle the HTTP POST/GET requests here._
 
 ```python
 @app.route("/reconcile", methods=['POST', 'GET'])
@@ -237,6 +262,11 @@ def reconcile():
     #Single queries have been deprecated.  This can be removed.
     #Look first for form-param requests.
     query = request.form.get('query')
+```
+
+_HTTP POST Query is constructed, with the default FAST index used is a JSON object is not sent from OpenRefine to this API. If a series of queries (usually ten at a time) are sent from OpenRefine, then instead of just proceeding with a default FAST index, it asks the uses to select an index. For the results, they are stored in JSON object with a results array._
+
+```python
     if query is None:
         #Then normal get param.s
         query = request.args.get('query')
@@ -271,7 +301,7 @@ def reconcile():
     return jsonpify(metadata)
 ```
 
-_Flask specific needs to define how this flask app/the API works._
+_Flask specific needs to define how this flask app/the API works. Adds the debug options someone can run to see how the HTTP requests between this API and the FAST API work._
 
 ```python
 if __name__ == '__main__':

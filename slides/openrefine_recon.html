@@ -22,8 +22,8 @@
       }
       body {
         font-family: 'Droid Serif';
-        font-size: 20px;
-        color: #777872;
+        font-size: 25px;
+        color: #2F302D;
       }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
@@ -32,7 +32,7 @@
       }
       h1 { font-size: 4em; color: #272822; }
       h2 { font-size: 3em; color: #272822; }
-      h3 { font-size: 1.75em; color: #777872; }
+      h3 { font-size: 1.75em; color: #2F302D; }
       small { font-size: 0.5em; }
       .footnote {
         position: absolute;
@@ -180,7 +180,7 @@ http://refine.deri.ie
 class: middle
 ## Agenda
 
-  * Very very very brief Intro to OpenRefine
+  * Very brief Intro to OpenRefine
   * OpenRefine Reconciliation options
     * Add column by fetching URL...
     * Standard Recon Service API
@@ -194,12 +194,12 @@ class: middle
   * OpenRefine = power data tool
   * Since 2012, its community-sourced
   * OpenRefine.org, github.com/OpenRefine/Openrefine
-  * Java-based tool that runs locally
+  * Java (and Jetty) tool that runs locally
   * GUI runs in your chosen browser
 
 ---
 class: middle
-## OpenRefine Functionalities Checklist
+## OpenRefine Functionalities
 
   * Import/Export Options
   * Cleans
@@ -220,18 +220,18 @@ class: middle
 ## OpenRefine Recon Options
 
   * Add column by fetching URL...
-    * performs HTTP requests against external data API in UI
+    * HTTP requests to external data API in UI
     * takes far longer to pull data
-    * requires parsing returned data in OpenRefine with GREL
+    * requires parsing returned data with GREL
   * Standard Recon Service API
-    * built a RESTful API that works between OpenRefine and external data
+    * RESTful API between OpenRefine and external data
     * requires tinkering knowledge of API building
-    * can host for easier use in OpenRefine
+    * can host for easier use
   * DERI RDF Extension
     * no longer actively supported
-    * extends the Standard Recon Service API to work with RDF, SPARQL Endpoints
+    * Standard Recon Service API to work with RDF, SPARQL endpoints
     * RDF docs held in memory
-    * SPARQL work runs into errors dependent on SPARQL endpoint server details
+    * SPARQL recon dependent on SPARQL server details
 
 ---
 class: middle
@@ -256,9 +256,9 @@ class: middle
 class: center middle
 ## Standard Recon Service API
 
-Access an external data set by building an OpenRefine Standard Reconciliation Service that handles querying, matching, and returning results from an external data service API.
+OpenRefine Standard Reconciliation Service takes UI data, queries external dataset, then handles ranking, normalization, and returning results to UI.
 
-A OpenRefine Standard Reconciliation Service API is a HTTP-based RESTful JSON-formatted API connecting OpenRefine to external datasets. This API can be constructed in a number of languages and frameworks.
+= HTTP-based RESTful JSON-formatted API connecting OpenRefine to external datasets. This API can be constructed in a number of languages and frameworks.
 
 Originally based off of Freebase extension (no longer working).
 
@@ -276,14 +276,14 @@ class: middle
   * Other bells and whistles
 
 ---
-class: middle
+class: center middle
 ## Recon Service API Metadata
 
 "When a service is called with just a JSONP callback parameter and no other parameters, it must return its metadata as a JSON object literal with at least 3 fields 'name', 'identifierSpace', and 'schemaSpace'. Other fields are optional for reconciliation services which can make use of the default Freebase preview, suggest, etc services, but non-Freebase reconciliation services may need to implement them all." -- https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API
 
 ---
 class: middle
-## Recon Service API Metadata Example
+## API Metadata Example Part 1
 
 ```
 {
@@ -298,6 +298,13 @@ class: middle
     "width" : 430,
     "height" : 300
   },
+```
+
+---
+class: middle
+## API Metadata Example Part 2
+
+```
   "suggest" : {
     "type" : {
       "service_url" : "http://this-api.freebaseapps.com",
@@ -318,13 +325,45 @@ class: middle
   "defaultTypes" : []
 }
 ```
--- https://github.com/OpenRefine/OpenRefine/wiki/Reconciliation-Service-API
+
+---
+class: middle
+## Query JSON Example
+
+```
+  {
+    "query" : "Kittens",
+    "limit" : 3,
+    "type" : "/fast/all",
+    "type_strict" : "any"
+  }
+```
+
+---
+class: middle
+## Reconciled JSON Example
+
+```
+{
+    "result" : [
+      {
+        "id" : "http://id.loc.gov/authorities/subjects/sh85072589"
+        "name" : "Kittens"
+        "type" : "/fast/all"
+        "match" : "false"
+      },
+      ... more results ...
+    ]
+  }
+```
 
 ---
 class: center middle
 ## Entity Types
 
+These are the types of entities for reconciliation, usually based on the result
 
+Depends on the service and is optional. Freebase holdover that can be used to access different indexes for an external data API.
 
 ---
 class: center middle
@@ -333,8 +372,8 @@ class: center middle
 Some wonderful developers made templates in a variety of languages, though python/flask seems to be the language/framework du jour, for folks to plug in external data API information. These will get a basic API service up and running fairly quickly for those with limited programming knowledge or time.
 
 ---
-class: middle
-## Standard Recon Service API Template/Example Links
+class: center middle
+## Standard Recon Service Examples
 
 * FAST Reconciliation Service (not hosted, using python)
   * Check 'pythonflaskmarkedupexample.md' in this workshop's GitHub repo.
@@ -347,7 +386,9 @@ class: middle
 class: center middle
 ## DERI RDF Extension Recon
 
-Using this, can reconcile against RDF documents and SPARQL Endpoints. No longer actively supported. 
+Using this, can reconcile against RDF documents and SPARQL Endpoints. 
+
+**No longer actively supported.**
 
 ---
 class: center middle

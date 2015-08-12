@@ -1,7 +1,5 @@
 # OpenRefine Standard Reconciliation Service API Workflows, Examples, Templates
 
-
-
 ## API Templates for working as OpenRefine Reconciliation Service
 
 * Basic Python/Flask Template: https://github.com/mikejs/reconcile-demo/
@@ -12,5 +10,6 @@
 
 * FAST Reconciliation Service (not hosted, using python): https://github.com/lawlesst/fast-reconcile
   * Check 'pythonflaskmarkedupexample.md' in this workshop's GitHub repo.
+* Geonames Reconciliation Service (not hosted, using python): http://github.com/cmh2166/geonames-reconcile
 * LCNAF - VIAF Reconciliation Service (hosted and not hosted, using python): https://github.com/codeforkjeff/refine_viaf
 * VIAF Reconciliation Service Example (hosted, using PHP): https://github.com/rdmpage/phyloinformatics/blob/master/services/reconciliation_viaf.php
