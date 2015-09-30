@@ -1,6 +1,6 @@
 # DERI RDF Extension Example
 
-_Below are is a legacy documentation of using the OpenRefine DERI RDF extenstion RDF Document Reconciliation functionality with the Library of Congress Thesaurus for Graphic Materials._
+_Below is legacy documentation of using the OpenRefine DERI RDF extenstion RDF Document Reconciliation functionality with the Library of Congress Thesaurus for Graphic Materials._
 
 _This requires the DERI RDF Extension be installed in OpenRefine to work: http://refine.deri.ie/_
 
